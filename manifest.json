@@ -1,11 +1,9 @@
 {
   "manifest_version": 3,
-  "name": "Echo Translate",
+  "name": "Shadow Translator",
   "version": "1.0",
   "description": "Appends original text alongside Google Translation.",
-  "permissions": [
-    "scripting"
-  ],
+  "permissions": [],
   "host_permissions": [
     "<all_urls>"
   ],
@@ -18,8 +16,8 @@
     }
   ],
   "icons": {
-    "16": "icon128.png",
-    "48": "icon128.png",
+    "16": "icon16.png",
+    "48": "icon48.png",
     "128": "icon128.png"
   }
 }

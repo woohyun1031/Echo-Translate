@@ -1,5 +1,5 @@
 (function() {
-    console.log("Echo-Translate: DOM MutationObserver initialized.");
+    console.log("Shadow Translator: DOM MutationObserver initialized.");
 
     // WeakMap을 사용하여 DOM 엘리먼트(target)가 화면에서 영구 삭제되면 
     // 보관 중이던 큐(Queue) 메모리도 브라우저가 자동으로 청소(Garbage Collection)하게 만듭니다. (메모리 릭 원천 차단)
