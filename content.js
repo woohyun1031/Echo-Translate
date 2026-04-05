@@ -1,7 +1,9 @@
 (function() {
     console.log("Echo-Translate: DOM MutationObserver initialized.");
 
-    const textQueueByTarget = new Map();
+    // WeakMap을 사용하여 DOM 엘리먼트(target)가 화면에서 영구 삭제되면 
+    // 보관 중이던 큐(Queue) 메모리도 브라우저가 자동으로 청소(Garbage Collection)하게 만듭니다. (메모리 릭 원천 차단)
+    const textQueueByTarget = new WeakMap();
 
     const observer = new MutationObserver((mutations) => {
         // 1Pass: 사라진 텍스트 노드 수집
@@ -17,7 +19,7 @@
                                 queue = [];
                                 textQueueByTarget.set(mutation.target, queue);
                             }
-                            // ★ 공백이 잘려나가지 않도록 rawText 통째로 저장 
+                            // 공백이 잘려나가지 않도록 rawText 통째로 저장 
                             queue.push(rawText);
                         }
                     }
@@ -42,7 +44,7 @@
                                 targetFont = targetFont.children[0];
                             }
                             
-                            // ★ 번역문 안에 불필요한 줄바꿈이 들어가지 않도록 트림 처리
+                            // 번역문 안에 불필요한 줄바꿈이 들어가지 않도록 트림 처리
                             const transText = targetFont.textContent.trim();
                             
                             // 원문이 가지고 있던 앞/뒤 공백 분리 (다음 요소와 글자가 달라붙지 않게 하기 위해)
@@ -79,13 +81,6 @@
                 });
             }
         });
-
-        // 큐를 다 쓴 타겟을 즉시 Map에서 제거하여 메모리 릭(Memory Leak) 방지
-        for (let [target, queue] of textQueueByTarget.entries()) {
-            if (queue.length === 0) {
-                textQueueByTarget.delete(target);
-            }
-        }
     });
 
     // Body가 만들어질 때까지 대기 후 감시 시작
