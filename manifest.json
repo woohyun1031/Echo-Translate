@@ -16,5 +16,10 @@
       "run_at": "document_end",
       "all_frames": true
     }
-  ]
+  ],
+  "icons": {
+    "16": "icon128.png",
+    "48": "icon128.png",
+    "128": "icon128.png"
+  }
 }
