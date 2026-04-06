@@ -3,10 +3,12 @@
   "name": "Shadow Translator",
   "version": "1.0",
   "description": "Appends original text alongside Google Translation.",
-  "permissions": [],
-  "host_permissions": [
-    "<all_urls>"
-  ],
+  "permissions": ["storage"],
+  "action": {
+    "default_title": "Shadow Translator",
+    "default_popup": "popup.html"
+  },
+  "host_permissions": ["<all_urls>"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
@@ -16,8 +18,8 @@
     }
   ],
   "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
   }
 }

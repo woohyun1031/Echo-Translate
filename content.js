@@ -87,17 +87,55 @@
     });
 
     // Body가 만들어질 때까지 대기 후 감시 시작
-    const initObserver = () => {
-        if (document.body) {
+    let isObserverRunning = false;
+    let isEnabled = true;
+
+    const startObserver = () => {
+        if (!isObserverRunning && isEnabled && document.body) {
             observer.observe(document.body, { 
                 childList: true, 
                 subtree: true 
             });
-            console.log("Echo-Translate: Observing body mutations natively.");
+            isObserverRunning = true;
+            console.log("Shadow Translator: Observer started.");
+        }
+    };
+
+    const stopObserver = () => {
+        if (isObserverRunning) {
+            observer.disconnect();
+            isObserverRunning = false;
+            console.log("Shadow Translator: Observer stopped.");
+        }
+    };
+
+    const initObserver = () => {
+        if (document.body) {
+            startObserver();
         } else {
             setTimeout(initObserver, 50);
         }
     };
 
-    initObserver();
+    // 저장소에서 설정 값 불러오기 및 리스너 등록
+    if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local.get(['isEnabled'], (result) => {
+            isEnabled = result.isEnabled !== false; // 값이 없을 땐 기본으로 true 지정
+            initObserver();
+        });
+
+        chrome.storage.onChanged.addListener((changes, namespace) => {
+            if (namespace === 'local' && changes.isEnabled !== undefined) {
+                isEnabled = changes.isEnabled.newValue;
+                if (isEnabled) {
+                    startObserver();
+                } else {
+                    stopObserver();
+                }
+            }
+        });
+    } else {
+        // 크롬 확장 프로그램 환경이 아닐 경우 (예외 처리)
+        initObserver();
+    }
 })();
