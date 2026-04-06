@@ -68,7 +68,10 @@
                             transSpan.style.fontSize = '0.9em';
                             targetFont.appendChild(transSpan);
                             
-                            // 4. 뒷 공백 (원래 가지고 있던 간격 복구하여 괄호 뒤에 다른 문자가 여백 없이 붙는 것 방지)
+                            // 3.5. 번역문 뒤에도 줄바꿈 추가 (다음 원본 텍스트가 번역문 옆에 바로 붙는 현상 방지)
+                            targetFont.appendChild(document.createElement('br'));
+                            
+                            // 4. 뒷 공백 (원래 가지고 있던 간격 복구)
                             if (trailingSpace) {
                                 targetFont.appendChild(document.createTextNode(trailingSpace));
                             }
