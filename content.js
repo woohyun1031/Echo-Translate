@@ -4,13 +4,18 @@
     const structuralTags = new Set([
         'P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 
         'LI', 'TD', 'TH', 'BLOCKQUOTE', 'DD', 'DT', 'FIGCAPTION',
-        'HEADER', 'FOOTER', 'MAIN', 'ASIDE', 'NAV', 'SECTION', 'ARTICLE', 'BODY'
+        'HEADER', 'FOOTER', 'MAIN', 'ASIDE', 'NAV', 'SECTION', 'ARTICLE', 'BODY',
+        // 추가된 구조적 컨테이너 (누락 방지)
+        'SUMMARY', 'DETAILS', 'PRE', 'ADDRESS', 'CAPTION', 'FIGURE', 'DIALOG'
     ]);
 
     function getBlockContainer(node) {
         let current = node;
+        const skipElements = new Set(['BUTTON', 'LABEL', 'INPUT', 'FORM', 'SELECT', 'OPTION', 'TEXTAREA']);
+        
         while (current && current.nodeType === Node.ELEMENT_NODE) {
-            if (current.tagName === 'BUTTON' || current.tagName === 'LABEL' || current.tagName === 'INPUT' || current.tagName === 'FORM') {
+            // 폼(Form) 요소, 드롭다운, 버튼 등 내부에 회색 div를 강제로 넣으면 UI/기능이 깨지므로 건너뜀
+            if (skipElements.has(current.tagName.toUpperCase())) {
                 return null; 
             }
             if (structuralTags.has(current.tagName.toUpperCase())) {
